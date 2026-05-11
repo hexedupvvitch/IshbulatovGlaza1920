@@ -1,0 +1,160 @@
+﻿<Page x:Class="IshbulatovGlaza1920.AddEditPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:IshbulatovGlaza1920"
+      mc:Ignorable="d" 
+      d:DesignHeight="700" d:DesignWidth="800"
+      Title="Добавление/редактирование агента">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Наименование -->
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="5">
+            <TextBlock Text="Наименование:" Width="120" FontSize="15" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding Title}" Width="250" FontSize="15" Height="25"/>
+        </StackPanel>
+
+        <!-- Адрес -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="5">
+            <TextBlock Text="Адрес:" Width="120" FontSize="15" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding Address}" Width="250" FontSize="15" Height="25"/>
+        </StackPanel>
+
+        <!-- ФИО директора -->
+        <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="5">
+            <TextBlock Text="ФИО директора:" Width="120" FontSize="15" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding DirectorName}" Width="250" FontSize="15" Height="25"/>
+        </StackPanel>
+
+        <!-- Логотип -->
+        <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Margin="5">
+            <TextBlock Text="Логотип:" Width="120" FontSize="15" VerticalAlignment="Center"/>
+            <Image Name="LogoImage" Width="100" Height="100" Stretch="Uniform">
+                <Image.Source>
+                    <Binding Path="Logo">
+                        <Binding.TargetNullValue>
+                            <ImageSource>/image/picture.png</ImageSource>
+                        </Binding.TargetNullValue>
+                    </Binding>
+                </Image.Source>
+            </Image>
+        </StackPanel>
+
+        <Button Content="Изменить логотип" Name="ChangePictureBtn" Click="ChangePictureBtn_Click"
+                Grid.Row="4" Grid.Column="0" Width="150" Height="30" FontSize="14" Margin="5" HorizontalAlignment="Left"/>
+
+        <!-- Тип агента -->
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="5">
+            <TextBlock Text="Тип агента:" Width="120" FontSize="15" VerticalAlignment="Center"/>
+            <ComboBox Name="ComboType" Width="150" Height="30" FontSize="15"
+                      DisplayMemberPath="Title" SelectedValuePath="ID"/>
+        </StackPanel>
+
+        <!-- Приоритет -->
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="5">
+            <TextBlock Text="Приоритет:" Width="120" FontSize="15" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding Priority, UpdateSourceTrigger=PropertyChanged}" Width="100" FontSize="15" Height="25"/>
+        </StackPanel>
+
+        <!-- ИНН -->
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="5">
+            <TextBlock Text="ИНН:" Width="120" FontSize="15" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding INN}" Width="150" FontSize="15" Height="25"/>
+        </StackPanel>
+
+        <!-- КПП -->
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="5">
+            <TextBlock Text="КПП:" Width="120" FontSize="15" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding KPP}" Width="150" FontSize="15" Height="25"/>
+        </StackPanel>
+
+        <!-- Email -->
+        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="5">
+            <TextBlock Text="Email:" Width="120" FontSize="15" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding Email}" Width="250" FontSize="15" Height="25"/>
+        </StackPanel>
+
+        <!-- Телефон -->
+        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="5">
+            <TextBlock Text="Телефон:" Width="120" FontSize="15" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding Phone}" Width="250" FontSize="15" Height="25"/>
+        </StackPanel>
+
+        <!-- Кнопки -->
+        <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <Button Content="Сохранить" Name="SaveAgent" Click="SaveAgent_Click"
+                    Width="150" Height="35" FontSize="16" Margin="10"/>
+            <Button Content="Удалить" Name="DeleteAgent" Click="DeleteAgent_Click"
+                    Width="150" Height="35" FontSize="16" Margin="10"/>
+        </StackPanel>
+
+        <!-- История продаж -->
+        <Border Grid.Row="7" Grid.ColumnSpan="2" BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="10" Background="#F5F5F5">
+            <StackPanel>
+                <TextBlock Text="История продаж" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                <!-- Добавление продажи -->
+                <Border BorderBrush="#CCC" BorderThickness="1" Padding="10" Margin="0,0,0,10" Background="White">
+                    <StackPanel>
+                        <TextBlock Text="Добавить новую продажу" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <WrapPanel>
+                            <TextBlock Text="Продукт:" VerticalAlignment="Center" Margin="5"/>
+                            <ComboBox Name="ProductComboBox" Width="250" Height="30" Margin="5"
+                                      IsEditable="True" KeyUp="ProductComboBox_KeyUp"/>
+
+                            <TextBlock Text="Кол-во:" VerticalAlignment="Center" Margin="5"/>
+                            <TextBox Name="CountTextBox" Width="60" Height="30" Margin="5"/>
+
+                            <TextBlock Text="Дата:" VerticalAlignment="Center" Margin="5"/>
+                            <DatePicker Name="SaleDatePicker" Height="30" Margin="5" Width="130"/>
+
+                            <Button Content="Добавить" Name="AddSaleBtn" Click="AddSaleBtn_Click"
+                                    Width="100" Height="30" Margin="5"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Список продаж -->
+                <ListView Name="SalesListView" MinHeight="150" MaxHeight="300">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Продукт" Width="300" DisplayMemberBinding="{Binding ProductName}"/>
+                            <GridViewColumn Header="Дата" Width="120">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding SaleDate, StringFormat=dd.MM.yyyy}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Количество" Width="80" DisplayMemberBinding="{Binding ProductCount}"/>
+                            <GridViewColumn Header="" Width="80">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Удалить" Tag="{Binding}" Click="DeleteSaleBtn_Click"
+                                                Width="70" Height="25"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>
