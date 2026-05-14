@@ -34,7 +34,7 @@ namespace IshbulatovGlaza1920
 
             DataContext = currentAgent;
 
-            // Загрузка типов агентов
+            //ззагрузка типов агентов
             var agentTypes = IshbulatovGlazaEntities.GetContext().AgentType.ToList();
             ComboType.ItemsSource = agentTypes;
             ComboType.DisplayMemberPath = "Title";
@@ -43,17 +43,17 @@ namespace IshbulatovGlaza1920
             if (currentAgent.AgentTypeID != 0)
                 ComboType.SelectedValue = currentAgent.AgentTypeID;
 
-            // Кнопка удалить видна только при редактировании
+            //кнопка удалить видна только при редактировании
             DeleteAgent.Visibility = (selectedAgent != null && selectedAgent.ID != 0) ? Visibility.Visible : Visibility.Collapsed;
 
-            // Загрузка продуктов
+            // загрузка продуктов
             LoadProducts();
 
-            // Загрузка истории продаж
+            //загрузка истории продаж
             if (currentAgent.ID != 0)
                 LoadSalesHistory();
 
-            // Дата по умолчанию
+            //дата по умолчанию
             SaleDatePicker.SelectedDate = DateTime.Today;
         }
 
@@ -77,7 +77,7 @@ namespace IshbulatovGlaza1920
             {
                 var context = IshbulatovGlazaEntities.GetContext();
                 var sales = context.ProductSale
-                    .Where(ps => ps.AgentID == currentAgent.ID)
+                    .Where(ps => ps.AgentID == currentAgent.ID) //prodazhy tolko etogo agenta
                     .ToList();
 
                 salesHistory.Clear();
@@ -85,14 +85,14 @@ namespace IshbulatovGlaza1920
                 {
                     salesHistory.Add(new SaleHistoryItem
                     {
-                        Product = sale.Product,
-                        ProductCount = sale.ProductCount,
-                        SaleDate = sale.SaleDate
+                        Product = sale.Product, //product
+                        ProductCount = sale.ProductCount, //kol-vo
+                        SaleDate = sale.SaleDate //data
                     });
                 }
 
                 SalesListView.ItemsSource = null;
-                SalesListView.ItemsSource = salesHistory;
+                SalesListView.ItemsSource = salesHistory; //refresh lisyt
             }
             catch (Exception ex)
             {
@@ -148,7 +148,7 @@ namespace IshbulatovGlaza1920
                 return;
             }
 
-            // Проверка: есть ли продажи
+            //проверка есть ли продажи
             bool hasSales = context.ProductSale.Any(ps => ps.AgentID == currentAgent.ID);
             if (hasSales)
             {
@@ -162,17 +162,17 @@ namespace IshbulatovGlaza1920
 
             try
             {
-                // Удаляем историю приоритета
+                //удаляем историю приоритета
                 var priorityHistory = context.AgentPriorityHistory.Where(ph => ph.AgentID == currentAgent.ID).ToList();
                 foreach (var item in priorityHistory)
                     context.AgentPriorityHistory.Remove(item);
 
-                // Удаляем точки продаж
+                //удаляем точки продаж
                 var shops = context.Shop.Where(s => s.AgentID == currentAgent.ID).ToList();
                 foreach (var shop in shops)
                     context.Shop.Remove(shop);
 
-                // Удаляем агента
+                //удаляем агента
                 context.Agent.Remove(agent);
                 context.SaveChanges();
 
@@ -188,7 +188,7 @@ namespace IshbulatovGlaza1920
         private void SaveAgent_Click(object sender, RoutedEventArgs e)
         {
             StringBuilder errors = new StringBuilder();
-
+            //проверка на ввод
             if (string.IsNullOrWhiteSpace(currentAgent.Title))
                 errors.AppendLine("Укажите наименование агента");
             if (string.IsNullOrWhiteSpace(currentAgent.Address))
@@ -200,25 +200,25 @@ namespace IshbulatovGlaza1920
             else
                 currentAgent.AgentTypeID = ((AgentType)ComboType.SelectedItem).ID;
 
-            // Приоритет — целое неотрицательное
+            //приоритет
             if (currentAgent.Priority < 0)
                 errors.AppendLine("Приоритет не может быть отрицательным");
             if (currentAgent.Priority == 0)
                 errors.AppendLine("Укажите приоритет агента (положительное число)");
 
-            // ИНН — 12 цифр
+            //ИНН 12 цифр
             if (string.IsNullOrWhiteSpace(currentAgent.INN))
                 errors.AppendLine("Укажите ИНН агента");
             else if (currentAgent.INN.Length != 12 || !currentAgent.INN.All(char.IsDigit))
                 errors.AppendLine("ИНН должен содержать ровно 12 цифр");
 
-            // КПП — 9 цифр
+            //КПП 9 цифр
             if (string.IsNullOrWhiteSpace(currentAgent.KPP))
                 errors.AppendLine("Укажите КПП агента");
             else if (currentAgent.KPP.Length != 9 || !currentAgent.KPP.All(char.IsDigit))
                 errors.AppendLine("КПП должен содержать ровно 9 цифр");
 
-            // Телефон
+            // number
             if (string.IsNullOrWhiteSpace(currentAgent.Phone))
                 errors.AppendLine("Укажите телефон агента");
             else
@@ -228,7 +228,7 @@ namespace IshbulatovGlaza1920
                     errors.AppendLine("Телефон должен содержать от 10 до 12 цифр");
             }
 
-            // Email
+            // email
             if (string.IsNullOrWhiteSpace(currentAgent.Email))
                 errors.AppendLine("Укажите почту агента");
             else if (!currentAgent.Email.Contains("@") || !currentAgent.Email.Contains("."))
@@ -249,7 +249,7 @@ namespace IshbulatovGlaza1920
 
                 context.SaveChanges();
 
-                // Сохраняем историю продаж
+                // сохраняем историю продаж
                 SaveSalesHistory(context);
 
                 MessageBox.Show("Информация сохранена");
@@ -263,7 +263,6 @@ namespace IshbulatovGlaza1920
                 {
                     fullError += "\n" + inner.Message;
 
-                    // Если это ошибка валидации EF
                     if (inner is System.Data.Entity.Validation.DbEntityValidationException validationEx)
                     {
                         foreach (var entityError in validationEx.EntityValidationErrors)
@@ -299,11 +298,11 @@ namespace IshbulatovGlaza1920
                     maxId++;
                     var newSale = new ProductSale
                     {
-                        ID = maxId,
-                        ProductID = saleItem.Product.ID,
-                        AgentID = currentAgent.ID,
-                        SaleDate = saleItem.SaleDate,
-                        ProductCount = saleItem.ProductCount
+                        ID = maxId, //noviy id
+                        ProductID = saleItem.Product.ID, //product
+                        AgentID = currentAgent.ID,//agent
+                        SaleDate = saleItem.SaleDate,//data
+                        ProductCount = saleItem.ProductCount//kol-vo
                     };
                     context.ProductSale.Add(newSale);
                 }
@@ -387,7 +386,8 @@ namespace IshbulatovGlaza1920
             if (string.IsNullOrWhiteSpace(searchText))
                 comboBox.ItemsSource = products;
             else
-                comboBox.ItemsSource = products.Where(p => p.Title.ToLower().Contains(searchText.ToLower())).ToList();
+                comboBox.ItemsSource = products.Where(p => p.Title.ToLower().Contains(searchText.ToLower())).ToList(); 
+            //если что-то введен то оставляем только то, где в названии есть этот текст
 
             comboBox.IsDropDownOpen = true;
         }
