@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,8 @@ namespace IshbulatovGlaza1920
         }
 
         private Agent currentAgent = new Agent();
-        private List<SaleHistoryItem> salesHistory = new List<SaleHistoryItem>();
+        private ObservableCollection<SaleHistoryItem> salesHistory =
+    new ObservableCollection<SaleHistoryItem>();
         private List<Product> products = new List<Product>();
 
         public AddEditPage(Agent selectedAgent)
@@ -55,6 +57,7 @@ namespace IshbulatovGlaza1920
 
             //дата по умолчанию
             SaleDatePicker.SelectedDate = DateTime.Today;
+            SalesListView.ItemsSource = salesHistory;
         }
 
         private void LoadProducts()
@@ -91,8 +94,7 @@ namespace IshbulatovGlaza1920
                     });
                 }
 
-                SalesListView.ItemsSource = null;
-                SalesListView.ItemsSource = salesHistory; //refresh lisyt
+          
             }
             catch (Exception ex)
             {
@@ -285,25 +287,26 @@ namespace IshbulatovGlaza1920
             try
             {
                 // Удаляем старые продажи
-                var existingSales = context.ProductSale.Where(ps => ps.AgentID == currentAgent.ID).ToList();
+                var existingSales = context.ProductSale
+                    .Where(ps => ps.AgentID == currentAgent.ID)
+                    .ToList();
+
                 foreach (var sale in existingSales)
                     context.ProductSale.Remove(sale);
+
                 context.SaveChanges();
 
                 // Добавляем новые
-                int maxId = context.ProductSale.Any() ? context.ProductSale.Max(ps => ps.ID) : 0;
-
                 foreach (var saleItem in salesHistory)
                 {
-                    maxId++;
                     var newSale = new ProductSale
                     {
-                        ID = maxId, //noviy id
-                        ProductID = saleItem.Product.ID, //product
-                        AgentID = currentAgent.ID,//agent
-                        SaleDate = saleItem.SaleDate,//data
-                        ProductCount = saleItem.ProductCount//kol-vo
+                        ProductID = saleItem.Product.ID,
+                        AgentID = currentAgent.ID,
+                        SaleDate = saleItem.SaleDate,
+                        ProductCount = saleItem.ProductCount
                     };
+
                     context.ProductSale.Add(newSale);
                 }
 
@@ -311,7 +314,9 @@ namespace IshbulatovGlaza1920
             }
             catch (Exception ex)
             {
-                throw new Exception("Ошибка при сохранении истории продаж: " + ex.Message, ex);
+                throw new Exception(
+                    "Ошибка при сохранении истории продаж: " + ex.Message,
+                    ex);
             }
         }
 
@@ -345,7 +350,7 @@ namespace IshbulatovGlaza1920
                 SaleDate = saleDate
             });
 
-            RefreshListView();
+       
             ClearSaleForm();
         }
 
@@ -360,15 +365,9 @@ namespace IshbulatovGlaza1920
                     "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     salesHistory.Remove(saleToRemove);
-                    RefreshListView();
+                    
                 }
             }
-        }
-
-        private void RefreshListView()
-        {
-            SalesListView.ItemsSource = null;
-            SalesListView.ItemsSource = salesHistory;
         }
 
         private void ClearSaleForm()
@@ -381,6 +380,10 @@ namespace IshbulatovGlaza1920
         private void ProductComboBox_KeyUp(object sender, KeyEventArgs e)
         {
             var comboBox = sender as ComboBox;
+
+            if (comboBox == null)
+                return;
+
             string searchText = comboBox.Text;
 
             if (string.IsNullOrWhiteSpace(searchText))

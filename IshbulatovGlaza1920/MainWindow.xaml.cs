@@ -23,8 +23,8 @@ namespace IshbulatovGlaza1920
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(new agentPage());
             Manager.MainFrame = MainFrame;
+            MainFrame.Navigate(new agentPage());
         }
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {

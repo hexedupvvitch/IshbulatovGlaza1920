@@ -30,13 +30,23 @@ namespace IshbulatovGlaza1920
         {
             if (int.TryParse(PriorityTextBox.Text, out int result))
             {
+                if (result < 0)
+                {
+                    MessageBox.Show("Приоритет не может быть отрицательным!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
                 NewPriority = result;
                 DialogResult = true;
                 Close();
             }
             else
             {
-                MessageBox.Show("Введите корректное число!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(
+                    "Введите корректное число!",
+                    "Ошибка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 

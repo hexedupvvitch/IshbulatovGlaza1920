@@ -93,7 +93,7 @@ namespace IshbulatovGlaza1920
                 CurrentPage--; //влево
             else if (direction == 2 && CurrentPage < CountPage - 1)
                 CurrentPage++; //вправо
-            else
+            else if (!selectedPage.HasValue)
                 return;
 
             int start = CurrentPage * RecordsPage; //индекс первого агента на странице
@@ -162,7 +162,12 @@ namespace IshbulatovGlaza1920
 
         private void EditBtn_Click(object sender, RoutedEventArgs e)
         {
-            Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as Agent));
+            var button = sender as Button;
+
+            if (button?.DataContext is Agent selectedAgent)
+            {
+                Manager.MainFrame.Navigate(new AddEditPage(selectedAgent));
+            }
         }
 
         private async void ChangePriorityBtn_Click(object sender, RoutedEventArgs e)
