@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IshbulatovGlaza1920"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Ишбулатов Глазки" Height="450" Width="800" FontFamily="Century Gothic" Icon="/image/Глазки-save.ico">
     <Grid Background="#FFFFE9F9">
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -16,6 +16,6 @@
         <Image Source="/image/Глазки-save.ico" HorizontalAlignment="Left" />
         <TextBlock Text="Агентство" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
         <Frame Name="MainFrame" ContentRendered="MainFrame_ContentRendered" NavigationUIVisibility="Hidden" Grid.Row="1"></Frame>
-        <Button Content="Назад" Name="BtnBack" Width="175" Height="30" FontSize="20" Click="BtnBack_Click" HorizontalAlignment="Right" Background="#B175EE" ></Button>
+        <Button Content="Назад" Name="BtnBack" Width="175" Height="30" FontSize="15" Click="BtnBack_Click" HorizontalAlignment="Right" Background="#B175EE" ></Button>
     </Grid>
 </Window>

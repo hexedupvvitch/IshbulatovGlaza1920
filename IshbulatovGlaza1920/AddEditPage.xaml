@@ -24,25 +24,25 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Наименование -->
+        <!--аименование-->
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="5">
             <TextBlock Text="Наименование:" Width="120" FontSize="15" VerticalAlignment="Center"/>
             <TextBox Text="{Binding Title}" Width="250" FontSize="15" Height="25"/>
         </StackPanel>
 
-        <!-- Адрес -->
+        <!--Адресc-->
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="5">
             <TextBlock Text="Адрес:" Width="120" FontSize="15" VerticalAlignment="Center"/>
             <TextBox Text="{Binding Address}" Width="250" FontSize="15" Height="25"/>
         </StackPanel>
 
-        <!-- ФИО директора -->
+        <!--ФИО-->
         <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="5">
             <TextBlock Text="ФИО директора:" Width="120" FontSize="15" VerticalAlignment="Center"/>
             <TextBox Text="{Binding DirectorName}" Width="250" FontSize="15" Height="25"/>
         </StackPanel>
 
-        <!-- Логотип -->
+        <!--Логотип-->
         <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Margin="5">
             <TextBlock Text="Логотип:" Width="120" FontSize="15" VerticalAlignment="Center"/>
             <Image Name="LogoImage" Width="100" Height="100" Stretch="Uniform">
@@ -57,16 +57,16 @@
         </StackPanel>
 
         <Button Content="Изменить логотип" Name="ChangePictureBtn" Click="ChangePictureBtn_Click"
-                Grid.Row="4" Grid.Column="0" Width="150" Height="30" FontSize="14" Margin="5" HorizontalAlignment="Left"/>
+                Grid.Row="4" Grid.Column="0"  Width="175" Height="30" FontSize="15" Margin="5" HorizontalAlignment="Left"/>
 
-        <!-- Тип агента -->
+        <!--Тип агента-->
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="5">
             <TextBlock Text="Тип агента:" Width="120" FontSize="15" VerticalAlignment="Center"/>
             <ComboBox Name="ComboType" Width="150" Height="30" FontSize="15"
                       DisplayMemberPath="Title" SelectedValuePath="ID"/>
         </StackPanel>
 
-        <!-- Приоритет -->
+        <!--Приоритет-->
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="5">
             <TextBlock Text="Приоритет:" Width="120" FontSize="15" VerticalAlignment="Center"/>
             <TextBox Text="{Binding Priority, UpdateSourceTrigger=PropertyChanged}" Width="100" FontSize="15" Height="25"/>
@@ -99,9 +99,9 @@
         <!-- Кнопки -->
         <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
             <Button Content="Сохранить" Name="SaveAgent" Click="SaveAgent_Click"
-                    Width="150" Height="35" FontSize="16" Margin="10"/>
+                    Width="175" Height="30" FontSize="15" Margin="10"/>
             <Button Content="Удалить" Name="DeleteAgent" Click="DeleteAgent_Click"
-                    Width="150" Height="35" FontSize="16" Margin="10"/>
+                     Width="175" Height="30" FontSize="15" Margin="10"/>
         </StackPanel>
 
         <!-- История продаж -->
@@ -125,7 +125,7 @@
                             <DatePicker Name="SaleDatePicker" Height="30" Margin="5" Width="130"/>
 
                             <Button Content="Добавить" Name="AddSaleBtn" Click="AddSaleBtn_Click"
-                                    Width="100" Height="30" Margin="5"/>
+                                     Width="175" Height="30" FontSize="15" Margin="5"/>
                         </WrapPanel>
                     </StackPanel>
                 </Border>
@@ -143,11 +143,11 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                             <GridViewColumn Header="Количество" Width="80" DisplayMemberBinding="{Binding ProductCount}"/>
-                            <GridViewColumn Header="" Width="80">
+                            <GridViewColumn Header="" Width="175">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Content="Удалить" Tag="{Binding}" Click="DeleteSaleBtn_Click"
-                                                Width="70" Height="25"/>
+                                                Width="175" Height="30" FontSize="15" HorizontalAlignment="Center" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

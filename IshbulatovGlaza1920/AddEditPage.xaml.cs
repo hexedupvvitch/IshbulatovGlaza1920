@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
+using System.Text.RegularExpressions;
 
 namespace IshbulatovGlaza1920
 {
@@ -105,37 +106,13 @@ namespace IshbulatovGlaza1920
         private void ChangePictureBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog myOpenFileDialog = new OpenFileDialog();
-            myOpenFileDialog.Filter = "Image files|*.png;*.jpg;*.jpeg;*.bmp|All files|*.*";
 
             if (myOpenFileDialog.ShowDialog() == true)
             {
-                try
-                {
-                    string sourceFile = myOpenFileDialog.FileName;
+                currentAgent.Logo = myOpenFileDialog.FileName;
 
-                    string imgsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "image", "agents");
-                    Directory.CreateDirectory(imgsFolder);
-
-                    string fileName = Path.GetFileName(sourceFile);
-                    string destPath = Path.Combine(imgsFolder, fileName);
-
-                    int count = 1;
-                    while (File.Exists(destPath))
-                    {
-                        string nameWithoutExt = Path.GetFileNameWithoutExtension(fileName);
-                        string ext = Path.GetExtension(fileName);
-                        destPath = Path.Combine(imgsFolder, $"{nameWithoutExt}_{count}{ext}");
-                        count++;
-                    }
-
-                    File.Copy(sourceFile, destPath);
-                    currentAgent.Logo = $@"\agents\{Path.GetFileName(destPath)}";
-                    LogoImage.Source = new BitmapImage(new Uri(destPath));
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Ошибка при копировании файла: " + ex.Message);
-                }
+                LogoImage.Source =
+                    new BitmapImage(new Uri(myOpenFileDialog.FileName));
             }
         }
 
@@ -232,9 +209,16 @@ namespace IshbulatovGlaza1920
 
             // email
             if (string.IsNullOrWhiteSpace(currentAgent.Email))
+            {
                 errors.AppendLine("Укажите почту агента");
-            else if (!currentAgent.Email.Contains("@") || !currentAgent.Email.Contains("."))
-                errors.AppendLine("Укажите корректный email");
+            }
+            else
+            {
+                string pattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
+
+                if (!Regex.IsMatch(currentAgent.Email, pattern))
+                    errors.AppendLine("Укажите корректный email");
+            }
 
             if (errors.Length > 0)
             {

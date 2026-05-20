@@ -82,7 +82,7 @@ namespace IshbulatovGlaza1920
                 using (var context = new IshbulatovGlazaEntities())
                 {
                     return context.ProductSale
-                        .Where(ps => ps.AgentID == ID && ps.SaleDate.Year == DateTime.Now.Year) 
+                        .Where(ps => ps.AgentID == ID && ps.SaleDate.Year == DateTime.Now.Year)
                         //.Where(ps => ps.AgentID == ID && ps.SaleDate.Year == 2019) //чтобы продажи за год показывались
                         .Sum(ps => (int?)ps.ProductCount) ?? 0;
                 }

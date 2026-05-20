@@ -19,6 +19,7 @@ namespace IshbulatovGlaza1920
         public int AgentID { get; set; }
         public System.DateTime SaleDate { get; set; }
         public int ProductCount { get; set; }
+
         public decimal Stoimost // сумма ОДНОЙ продажи высчитывается из минимальной стоимости продукта умноженной на количество купленного продукта
         {
             get

@@ -9,6 +9,8 @@
             <Setter Property="Width" Value="175"></Setter>
             <Setter Property="Height" Value="30"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
+            <Setter Property="FontFamily" Value="Century Gothic"></Setter>
+            <Setter Property="Background" Value="#B57BE8"></Setter>
         </Style>
     </Application.Resources>
 </Application>

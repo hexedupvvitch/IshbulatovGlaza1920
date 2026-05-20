@@ -15,6 +15,7 @@ namespace IshbulatovGlaza1920
     
     public partial class IshbulatovGlazaEntities : DbContext
     {
+
         public static IshbulatovGlazaEntities _context;
 
         public static IshbulatovGlazaEntities GetContext()
